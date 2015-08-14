@@ -4,20 +4,17 @@ from setuptools import setup
 import request
 
 setup(
-    name='django-request',
-    version=request.__version__,
-    description='django-request is a statistics module for django. It stores requests in a database for admins to see, it can also be used to get statistics on who is online etc.',
+    name='django-predata-request',
+    version='0.1',
+    description='django-predata-request is a statistics module for django. It stores requests in a database for admins to see, it can also be used to get statistics on who is online etc.',
     long_description="""
     django-request is a statistics module for django. It stores requests in a database for admins to see, it can also be used to get statistics on who is online etc.
 
-    .. image:: https://github.com/kylef/django-request/raw/master/docs/graph.png
-
     As well as a site statistics module, with the active_users template tag and manager method you can also use django-request to show who is online in a certain time.
     """,
-    author='Kyle Fuller',
-    author_email='kyle@fuller.li',
-    url=request.__URL__,
-    download_url='http://github.com/kylef/django-request/archive/%s.zip' % request.__version__,
+    author='predata',
+    author_email='dev@predata.com',
+    url='predata.com',
     packages=['request', 'request.templatetags', 'request.management', 'request.management.commands'],
     package_data={'request': [
         'templates/admin/request/*.html',

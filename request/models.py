@@ -23,7 +23,11 @@ class Request(models.Model):
     time = models.DateTimeField(_('time'), auto_now_add=True)
 
     is_secure = models.BooleanField(_('is secure'), default=False)
-    is_ajax = models.BooleanField(_('is ajax'), default=False, help_text=_('Wheather this request was used via javascript.'))
+    is_ajax = models.BooleanField(
+        _('is ajax'), default=False, help_text=_('Wheather this request was used via javascript.'))
+
+    query_string = models.CharField(_('query string'), max_length=255, default=False, blank=True)
+    x_forwarded_for = models.CharField(_('x_forwarded_for'), max_length=255, default=False, blank=True)
 
     # User infomation
     ip = models.GenericIPAddressField(_('ip address'))
@@ -52,6 +56,9 @@ class Request(models.Model):
 
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
+
+        self.query_string = request.GET.urlencode()
+        self.x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')[:255]
 
         # User infomation
         self.ip = request.META.get('REMOTE_ADDR', '')
@@ -104,7 +111,7 @@ class Request(models.Model):
         elif request_settings.REQUEST_ANONYMOUS_IP:
             parts = self.ip.split('.')[0:-1]
             parts.append('1')
-            self.ip='.'.join(parts)
+            self.ip = '.'.join(parts)
         if not request_settings.REQUEST_LOG_USER:
             self.user = None
 
