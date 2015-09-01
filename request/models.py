@@ -26,8 +26,8 @@ class Request(models.Model):
     is_ajax = models.BooleanField(
         _('is ajax'), default=False, help_text=_('Wheather this request was used via javascript.'))
 
-    query_string = models.CharField(_('query string'), max_length=255, default=False, blank=True)
-    x_forwarded_for = models.CharField(_('x_forwarded_for'), max_length=255, default=False, blank=True)
+    query_string = models.CharField(_('query string'), max_length=255, default='', null=True, blank=True)
+    x_forwarded_for = models.CharField(_('x_forwarded_for'), max_length=255, default='', null=True, blank=True)
 
     # User infomation
     ip = models.GenericIPAddressField(_('ip address'))
@@ -57,7 +57,7 @@ class Request(models.Model):
         self.is_secure = request.is_secure()
         self.is_ajax = request.is_ajax()
 
-        self.query_string = request.GET.urlencode()
+        self.query_string = request.GET.urlencode()[:255]
         self.x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')[:255]
 
         # User infomation
